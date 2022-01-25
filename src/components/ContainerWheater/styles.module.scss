@@ -1,0 +1,46 @@
+.containerData {
+  width: 50%;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  .filterCity {
+    display: flex;
+    height: 10%;
+    justify-content: center;
+    align-items: center;
+    select {
+      border: 0;
+      border-radius: 0;
+    }
+  }
+  .iconWheater {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30%;
+  }
+  .temperature {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10%;
+  }
+  .containerInformation {
+    display: flex;
+    justify-content: space-around;
+    align-items: self-start;
+    flex-direction: row;
+    height: 30%;
+    width: 80%;
+    margin-top: 40px;
+    .information {
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      flex-direction: column;
+    }
+  }
+}
