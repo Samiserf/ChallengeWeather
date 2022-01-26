@@ -1,13 +1,9 @@
 import React from "react";
 import css from "./styles.module.scss";
 import { API_KEY } from "../../constants/config";
-import ListCities from "./components/ListCities";
-import wheater1 from "../../img/wheater1.png";
-import wheater2 from "../../img/wheater2.png";
-import wheater3 from "../../img/wheater3.png";
-import wheater4 from "../../img/wheater4.png";
-import wheater5 from "../../img/wheater5.png";
-import wheater6 from "../../img/wheater6.png";
+import { LNG } from "../../constants/config";
+import ListCities from "./components/listCities/ListCities";
+import IconWeather from "./components/iconWeather/iconWeather";
 
 export default function ContainerWheater() {
   const [currentCity, setCurrentCity] = React.useState("3435910");
@@ -26,16 +22,12 @@ export default function ContainerWheater() {
   };
 
   React.useEffect(() => {
-    console.log("Call to api wheater");
-    console.log(currentCity);
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?id=${currentCity}&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?id=${currentCity}&appid=${API_KEY}&lang=${LNG}&units=metric`
     )
       .then((response) => response.json())
       .then((data) => setDataCity(data));
   }, [currentCity]);
-
-  console.log(dataCity);
 
   return (
     <div className={`${css.containerData}`}>
@@ -43,44 +35,55 @@ export default function ContainerWheater() {
         <ListCities listCities={mockupCities} handlerEdit={handlerEditCity} />
       </div>
       <div className={`${css.iconWheater}`}>
-        <img src={wheater2}></img>
+        <IconWeather iconWeather={dataCity && dataCity.weather} />
       </div>
-      <div className={`${css.temperature}`}>33°</div>
+      <div className={`${css.temperature}`}>
+        <h1>
+          {dataCity.weather ? dataCity.weather[0].description : "Cargando"}
+        </h1>
+        <h2>{dataCity.main ? dataCity.main.temp : "Cargando"}</h2>
+      </div>
       <div className={`${css.containerInformation}`}>
         <div className={`${css.information}`}>
           <div>
             <h4>Temperature min: </h4>
-            <span>32</span>
+            <span>{dataCity.main ? dataCity.main.temp_min : "Cargando"}</span>
           </div>
           <div>
             <h4>Temperature max: </h4>
-            <span>32</span>
+            <span>{dataCity.main ? dataCity.main.temp_max : "Cargando"}</span>
           </div>
           <div>
-            <h4>Humedity: </h4>
-            <span>32</span>
+            <h4>Humedad: </h4>
+            <span>
+              {dataCity.main ? `${dataCity.main.humidity}%` : "Cargando"}
+            </span>
           </div>
           <div>
             <h4>Wind: </h4>
-            <span>32</span>
+            <span>
+              {dataCity.wind ? `${dataCity.wind.speed} km/h` : "Cargando"}
+            </span>
           </div>
         </div>
         <div className={`${css.information}`}>
           <div>
-            <h4>Temperature min: </h4>
-            <span>32</span>
+            <h4>Visibilidad: </h4>
+            <span>{dataCity.main ? dataCity.main.temp : "Cargando"}</span>
           </div>
           <div>
-            <h4>Temperature max: </h4>
-            <span>32</span>
+            <h4>Porcentaje de nubes: </h4>
+            <span>
+              {dataCity.clouds ? `${dataCity.clouds.all}%` : "Cargando"}
+            </span>
           </div>
           <div>
-            <h4>Humedity: </h4>
-            <span>32</span>
+            <h4>Se siente como: </h4>
+            <span>{dataCity.main ? dataCity.main.feels_like : "Cargando"}</span>
           </div>
           <div>
-            <h4>Wind: </h4>
-            <span>32</span>
+            <h4>Presion atmoferica: </h4>
+            <span>{dataCity.main ? dataCity.main.pressure : "Cargando"}</span>
           </div>
         </div>
       </div>
