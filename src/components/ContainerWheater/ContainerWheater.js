@@ -31,27 +31,34 @@ export default function ContainerWheater() {
 
   return (
     <div className={`${css.containerData}`}>
-      <div className={`${css.filterCity}`}>
-        <ListCities listCities={mockupCities} handlerEdit={handlerEditCity} />
+      <div className={`${css.header}`}>
+        <h1>Weather Aplication</h1>
       </div>
-      <div className={`${css.iconWheater}`}>
-        <IconWeather iconWeather={dataCity && dataCity.weather} />
+      <div className={`${css.containerWeather}`}>
+        <div className={`${css.filterCity}`}>
+          <ListCities listCities={mockupCities} handlerEdit={handlerEditCity} />
+        </div>
+        <div className={`${css.iconWheater}`}>
+          <IconWeather iconWeather={dataCity && dataCity.weather} />
+        </div>
       </div>
       <div className={`${css.temperature}`}>
-        <h1>
-          {dataCity.weather ? dataCity.weather[0].description : "Cargando"}
-        </h1>
-        <h2>{dataCity.main ? dataCity.main.temp : "Cargando"}</h2>
+        <p>{dataCity.weather ? dataCity.weather[0].description : "Cargando"}</p>
+        <h2>{dataCity.main ? `${dataCity.main.temp} °c` : "Cargando"}</h2>
       </div>
       <div className={`${css.containerInformation}`}>
         <div className={`${css.information}`}>
           <div>
             <h4>Temperature min: </h4>
-            <span>{dataCity.main ? dataCity.main.temp_min : "Cargando"}</span>
+            <span>
+              {dataCity.main ? `${dataCity.main.temp_min} °c` : "Cargando"}
+            </span>
           </div>
           <div>
             <h4>Temperature max: </h4>
-            <span>{dataCity.main ? dataCity.main.temp_max : "Cargando"}</span>
+            <span>
+              {dataCity.main ? `${dataCity.main.temp_max} °c` : "Cargando"}
+            </span>
           </div>
           <div>
             <h4>Humedad: </h4>
