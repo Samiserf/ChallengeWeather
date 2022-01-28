@@ -4,7 +4,7 @@ import css from "./styles.module.scss";
 export default function ContainerWheater({ listCities, handlerEdit }) {
   return (
     <>
-      <p>Seleccione una ciudad: </p>
+      <h3>Seleccione una ciudad: </h3>
       <select onChange={(e) => handlerEdit(e)}>
         {listCities.map((city) => {
           return (
