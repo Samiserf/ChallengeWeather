@@ -1,33 +1,50 @@
 import React from "react";
 import css from "./styles.module.scss";
+import ReactLoading from "react-loading";
 import { API_KEY } from "../../constants/config";
 import { LNG } from "../../constants/config";
 import ListCities from "./components/listCities/ListCities";
 import IconWeather from "./components/iconWeather/iconWeather";
+import InformationWeather from "./components/informationWeather/informationWeather";
 
 export default function ContainerWheater() {
-  const [currentCity, setCurrentCity] = React.useState("3435910");
-  const [dataCity, setDataCity] = React.useState({});
-
+  // SUpuesta informacion de lista de ciudades API.
   const mockupCities = [
-    { city: "Buenos Aires", id: "3435910" },
-    { city: "Misiones", id: "3865086" },
-    { city: "Mar del plata", id: "3430863" },
-    { city: "Bariloche", id: "7647007" },
-    { city: "Mendoza", id: "3844421" },
+    { city: "Buenos Aires", lat: "-34.6132", lng: "-58.3772" },
+    { city: "Misiones", lat: "-38.7409", lng: "-62.2643" },
+    { city: "Mar del plata", lat: "-38.0023", lng: "-57.5575" },
+    { city: "Bariloche", lat: "-41.1456", lng: "-71.3082" },
+    { city: "Mendoza", lat: "-32.8908", lng: "-68.8272" },
   ];
 
+  // Initialize currentCity with the first city supose get info API
+  const [currentCity, setCurrentCity] = React.useState({
+    city: mockupCities[0].city,
+    lat: mockupCities[0].lat,
+    lng: mockupCities[0].lng,
+  });
+  const [dataCity, setDataCity] = React.useState({});
+  const [indexDayWeather, setIndexDayWeather] = React.useState(0);
+
   const handlerEditCity = (e) => {
-    setCurrentCity(e.target.value);
+    const filterCity = mockupCities.filter(
+      (city) => city.city === e.target.value
+    );
+    setCurrentCity(...filterCity);
   };
 
   React.useEffect(() => {
+    setDataCity({});
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?id=${currentCity}&appid=${API_KEY}&lang=${LNG}&units=metric`
+      `https://openweathermap.org/data/2.5/onecall?lat=${currentCity.lat}&lon=${currentCity.lng}&units=metric&appid=${API_KEY}&lang=${LNG}&exclude=current,minutely,hourly,alerts`
     )
       .then((response) => response.json())
       .then((data) => setDataCity(data));
   }, [currentCity]);
+
+  function setIndexDayWeatherFunction(index) {
+    setIndexDayWeather(index);
+  }
 
   return (
     <div className={`${css.containerData}`}>
@@ -36,63 +53,45 @@ export default function ContainerWheater() {
       </div>
       <div className={`${css.containerWeather}`}>
         <div className={`${css.filterCity}`}>
-          <ListCities listCities={mockupCities} handlerEdit={handlerEditCity} />
+          <ListCities
+            labelSelect="Choose a city: "
+            listCities={mockupCities}
+            handlerEdit={handlerEditCity}
+          />
         </div>
         <div className={`${css.iconWheater}`}>
-          <IconWeather iconWeather={dataCity && dataCity.weather} />
+          {Object.keys(dataCity).length !== 0 ? (
+            <IconWeather
+              iconWeather={
+                Object.keys(dataCity).length !== 0 &&
+                dataCity.daily[indexDayWeather].weather
+              }
+            />
+          ) : (
+            <ReactLoading type="balls" color="#ccc" />
+          )}
         </div>
       </div>
       <div className={`${css.temperature}`}>
-        <p>{dataCity.weather ? dataCity.weather[0].description : "Cargando"}</p>
-        <h2>{dataCity.main ? `${dataCity.main.temp} °c` : "Cargando"}</h2>
+        {Object.keys(dataCity).length !== 0 ? (
+          <>
+            <p>{dataCity.daily[indexDayWeather].weather[0].description}</p>
+            <h2>{dataCity.daily[indexDayWeather].temp.day} °C</h2>
+          </>
+        ) : (
+          <ReactLoading type="balls" color="#ccc" />
+        )}
       </div>
       <div className={`${css.containerInformation}`}>
-        <div className={`${css.information}`}>
-          <div>
-            <h4>Temperature min: </h4>
-            <span>
-              {dataCity.main ? `${dataCity.main.temp_min} °c` : "Cargando"}
-            </span>
-          </div>
-          <div>
-            <h4>Temperature max: </h4>
-            <span>
-              {dataCity.main ? `${dataCity.main.temp_max} °c` : "Cargando"}
-            </span>
-          </div>
-          <div>
-            <h4>Humedad: </h4>
-            <span>
-              {dataCity.main ? `${dataCity.main.humidity}%` : "Cargando"}
-            </span>
-          </div>
-          <div>
-            <h4>Wind: </h4>
-            <span>
-              {dataCity.wind ? `${dataCity.wind.speed} km/h` : "Cargando"}
-            </span>
-          </div>
-        </div>
-        <div className={`${css.information}`}>
-          <div>
-            <h4>Visibilidad: </h4>
-            <span>{dataCity.main ? dataCity.main.temp : "Cargando"}</span>
-          </div>
-          <div>
-            <h4>Porcentaje de nubes: </h4>
-            <span>
-              {dataCity.clouds ? `${dataCity.clouds.all}%` : "Cargando"}
-            </span>
-          </div>
-          <div>
-            <h4>Se siente como: </h4>
-            <span>{dataCity.main ? dataCity.main.feels_like : "Cargando"}</span>
-          </div>
-          <div>
-            <h4>Presion atmoferica: </h4>
-            <span>{dataCity.main ? dataCity.main.pressure : "Cargando"}</span>
-          </div>
-        </div>
+        {Object.keys(dataCity).length !== 0 ? (
+          <InformationWeather
+            dataCity={Object.keys(dataCity).length !== 0 ? dataCity : {}}
+            indexDayWeather={indexDayWeather}
+            setIndexDayWeatherFunction={setIndexDayWeatherFunction}
+          />
+        ) : (
+          <ReactLoading type="balls" color="#ccc" />
+        )}
       </div>
     </div>
   );
