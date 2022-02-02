@@ -12,7 +12,7 @@ export default function ContainerWheater({
       <select onChange={(e) => handlerEdit(e)}>
         {listCities.map((city) => {
           return (
-            <option key={city.id} value={city.city}>
+            <option key={city.lat} value={city.city}>
               {city.city}
             </option>
           );
