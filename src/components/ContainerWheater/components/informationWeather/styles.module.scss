@@ -1,0 +1,53 @@
+.toogleDaysInformation {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 2%;
+  // div {
+  //   border: 1px solid #ccc;
+  //   padding: 20px 10px 20px 10px;
+  //   margin-left: 10px;
+  //   cursor: pointer;
+  //   &.isSelected {
+  //     background-color: aquamarine;
+  //   }
+  //   &:hover {
+  //     background: #ccc;
+  //   }
+  // }
+  select {
+    padding: 10px 50px 10px 50px;
+  }
+}
+.wrapInformation {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  flex-direction: row;
+  margin-top: 10px;
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+    .information {
+      justify-content: center;
+      align-items: center;
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+  }
+  .information {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    h4 {
+      margin-bottom: 5px;
+    }
+  }
+}

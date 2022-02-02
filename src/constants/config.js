@@ -1,3 +1,3 @@
-export const API_KEY = "719932bbdf0c9630aded80c607a69293";
+export const API_KEY = "439d4b804bc8187953eb36d2a8c26a02";
 
 export const LNG = "es";

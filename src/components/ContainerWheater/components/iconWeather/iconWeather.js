@@ -9,9 +9,6 @@ import wheater6 from "../../../../img/wheater6.png";
 export default function IconWeather({ iconWeather }) {
   const [iconWeatherState, setIconWeatherState] = React.useState(wheater1);
 
-  console.log("iconWeather");
-  console.log(iconWeather);
-
   function calculateIconWeather() {
     if (iconWeather) {
       if (iconWeather[0].icon === "01n" || iconWeather[0].icon === "01d") {
